@@ -3,7 +3,7 @@ SHELL = /bin/bash
 CXX ?= ccache g++
 CXXFLAGS = -Wall -Wextra -g
 LDFLAGS = -Ldeps/SFML/lib/ -lsfml-audio -lsfml-graphics -lsfml-network \
-	-lsfml-system -lsfml-window
+	-lsfml-system -lsfml-window -Wl,-rpath,deps/SFML/lib
 INCLUDES = -Ideps/SFML/include
 
 BLDDIR = build
@@ -36,6 +36,6 @@ $(BLDDIR)/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 test: $(BLDDIR)/reversi
-	LD_LIBRARY_PATH=deps/SFML/lib ./$(BLDDIR)/reversi
+	./$(BLDDIR)/reversi
 
 .PHONY: all clean sfml test
