@@ -12,6 +12,7 @@ class AI {
   private:
     Board* board;
     int flipCount(int row, int col, int player);
+    int rateMove(int x, int y, int player);
 };
 
 #endif

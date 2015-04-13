@@ -3,6 +3,8 @@
 #include "board.h"
 #include <iostream>
 
+#define cornerValue 6
+
 AI::AI(Board* board) {
   this->board = board;
 }
@@ -11,23 +13,13 @@ sf::Vector2<int> AI::makeMove(int player) {
   int bestX;
   int bestY;
   int best = 0;
-  bool done = false;
   for (int i = 0; i < 8; i++) {
-    if (done) {
-      break;
-    }
-
     for (int j = 0; j < 8; j++) {
       if (board->get(i, j) == -1) {
-        if ((i == 0 || i == 7) && (j == 0 || j == 7)) {
+        if (rateMove(i, j, player) > best) {
           bestX = i;
           bestY = j;
-          done = true;
-          break;
-        }
-        else if (flipCount(i, j, player) > best) {
-          bestX = i;
-          bestY = j;
+          best = rateMove(i, j, player);
         }
       }
     }
@@ -101,4 +93,64 @@ int AI::flipCount(int row, int col, int player) {
   }
 
   return flipCount;
+}
+
+int AI::rateMove(int x, int y, int player) {
+  int eval = 0;
+  if (x > 7 || y > 7 || x < 0 || y < 0) {
+    return 0;
+  }
+
+  if (board->get(x, y) != -1) {
+    return 0;
+  }
+
+  int temp = flipCount(x, y, player);
+
+  // Favor corners
+  if (x == 0 || x == 7) {
+    temp += cornerValue;
+  }
+  if (y == 0 || y == 7) {
+    temp += cornerValue;
+  }
+
+  // Disfavor giving corners
+  if (x == 1 || x == 6) {
+    temp -= cornerValue;
+  }
+  if (y == 1 || y == 6){
+    temp -= cornerValue;
+  }
+
+  if (x == 1 && (y == 1 || y == 6)) {
+    temp -= cornerValue;
+  }
+  if (y == 1 && (x == 1 || x == 6)) {
+    temp -= cornerValue;
+  }
+
+  if (x == 0 && (y == 1 || y == 6)) {
+    temp -= 5;
+  }
+  if (y == 0 && (x == 1 || x == 6)) {
+    temp -= 5;
+  }
+  if (y == 0 && (x == 0 || x == 7)) {
+    temp += cornerValue;
+  }
+
+  if (x == 0 && (y == 0 || y == 7)) {
+    temp += cornerValue;
+  }
+
+  if (temp > eval) {
+    eval = temp;
+  }
+
+  if (eval < 1) {
+    eval = 1;
+  }
+
+  return eval;
 }
