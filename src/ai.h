@@ -7,11 +7,11 @@
 class AI {
   public:
     AI(Board* board);
-    sf::Vector2<int> makeMove();
+    sf::Vector2<int> makeMove(int player);
 
   private:
     Board* board;
-    int flipCount(int row, int col);
+    int flipCount(int row, int col, int player);
 };
 
 #endif

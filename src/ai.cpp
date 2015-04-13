@@ -2,30 +2,43 @@
 #include "ai.h"
 #include "board.h"
 #include <iostream>
+
 AI::AI(Board* board) {
   this->board = board;
 }
 
-sf::Vector2<int> AI::makeMove() {
+sf::Vector2<int> AI::makeMove(int player) {
   int bestX;
   int bestY;
   int best = 0;
+  bool done = false;
   for (int i = 0; i < 8; i++) {
+    if (done) {
+      break;
+    }
+
     for (int j = 0; j < 8; j++) {
       if (board->get(i, j) == -1) {
-        if (flipCount(i, j) > best) {
+        if ((i == 0 || i == 7) && (j == 0 || j == 7)) {
+          bestX = i;
+          bestY = j;
+          done = true;
+          break;
+        }
+        else if (flipCount(i, j, player) > best) {
           bestX = i;
           bestY = j;
         }
       }
     }
   }
+
   std::cout << "ai playing " << bestX << ", " << bestY << "\n";
   board->set(bestX, bestY, 1);
   return sf::Vector2<int>(bestX, bestY);
 }
 
-int AI::flipCount(int row, int col) {
+int AI::flipCount(int row, int col, int player) {
   if (row >= 8 || col >= 8 || row < 0 || col < 0) {
     return 0;
   }
@@ -72,7 +85,7 @@ int AI::flipCount(int row, int col) {
         // If the stone is the current player's stone, increment flip count by
         // the distance minus one since the slots preceding the current slot.
         // would be flipped
-        if (board->get(curY, curX) == 1) {
+        if (board->get(curY, curX) == player) {
           flipCount += dist - 1;
           break;
         }

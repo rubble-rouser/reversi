@@ -13,7 +13,12 @@ Game::Game() {
   blacks = 0;
   whites = 0;
   skipped = false;
+  aiOn = false;
   possibleMoves();
+}
+
+void Game::setAI(bool on) {
+  aiOn = on;
 }
 
 Board* Game::getBoard() {
@@ -39,14 +44,28 @@ int Game::whiteScore() {
 void Game::nextTurn() {
   currentTurn = currentTurn == 1 ? 2 : 1;
   possibleMoves();
-  if (currentTurn == 1) {
-    sf::Vector2<int> played = ai->makeMove();
-    flip(played.x, played.y);
-    nextTurn();
+
+  if (gameOver) {
+    return;
+  }
+
+  if (aiOn) {
+    if (currentTurn == 1) {
+      sf::Vector2<int> played = ai->makeMove(currentTurn);
+      flip(played.x, played.y);
+      nextTurn();
+    }
+  }
+  else {
+    currentTurn = (currentTurn+1)%2+1;
   }
 }
 
 bool Game::isValidMove(int row, int col) {
+  // Tile does not exist.
+  if (row < 0 || row > 7 || col < 0 || col > 7) {
+    return false;
+  }
 
   // Tile is taken.
   if (board->get(row, col) > 0) {

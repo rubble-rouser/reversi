@@ -20,6 +20,7 @@ int main() {
   const double size = (800 - 45) / 8.0;
 
   sf::RenderWindow window(sf::VideoMode(1000, 800), "REVERSI");
+  sf::View view(window.getDefaultView());
   window.setFramerateLimit(30);
 
   sf::RectangleShape squares[8][8];
@@ -43,12 +44,22 @@ int main() {
   scores.setCharacterSize(30);
   scores.setPosition(850, 200);
 
+  sf::RectangleShape button1(sf::Vector2f(180, 100));
+  sf::RectangleShape button2(sf::Vector2f(180, 100));
+  button1.setPosition(810, 500);
+  button2.setPosition(810, 600);
+  button1.setFillColor(sf::Color::Blue);
+  button2.setFillColor(sf::Color::Red);
+
   while (window.isOpen()) {
     sf::Event event;
 
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         window.close();
+      }
+      if (event.type == sf::Event::Resized) {
+        window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
       }
     }
 
@@ -59,6 +70,18 @@ int main() {
     int col = localPosition.x / int(size + 5);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && window.hasFocus()) {
+      if (localPosition.x > 810 && localPosition.x < 990) {
+        if (localPosition.y > 500 && localPosition.y < 600) {
+          delete game;
+          game = new Game();
+          game->setAI(true);
+        }
+        else if (localPosition.y > 600 && localPosition.y < 700) {
+          delete game;
+          game = new Game();
+          game->setAI(false);
+        }
+      }
       game->click(col, row);
     }
 
@@ -76,7 +99,6 @@ int main() {
             ? sf::Color::White
             : sf::Color::Black);
           circle.setPosition(i * (size + 5) + 10, j * (size + 5) + 10);
-          // circle.setScale(0.75, 1.0);
           window.pushGLStates();
           window.draw(circle);
           window.popGLStates();
@@ -92,9 +114,23 @@ int main() {
       }
     }
 
+    turn.setPosition(850, 100);
+    turn.setCharacterSize(30);
+    turn.setColor(sf::Color::White);
+    turn.setStyle(sf::Text::Regular);
+
     if (game->isOver()) {
-      turn.setString("GAME OVER");
-      turn.setPosition(300, 300);
+      if (game->whiteScore() > game->blackScore()) {
+        turn.setString("GAME OVER:\n WHITE WON");
+      }
+      else if (game->whiteScore() < game->blackScore()) {
+        turn.setString("GAME OVER:\n BLACK WON");
+      }
+      else {
+        turn.setString("GAME OVER:\n TIED");
+      }
+
+      turn.setPosition(200, 300);
       turn.setCharacterSize(72);
       turn.setColor(sf::Color::Red);
       turn.setStyle(sf::Text::Bold);
@@ -111,6 +147,8 @@ int main() {
     window.pushGLStates();
     window.draw(turn);
     window.draw(scores);
+    window.draw(button1);
+    window.draw(button2);
     window.popGLStates();
 
     window.display();

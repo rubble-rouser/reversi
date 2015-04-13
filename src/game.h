@@ -14,6 +14,7 @@ class Game {
     bool isOver();
     int blackScore();
     int whiteScore();
+    void setAI(bool on);
 
   private:
     Board* board;
@@ -23,6 +24,7 @@ class Game {
     int whites;
     bool gameOver;
     bool skipped;
+    bool aiOn;
     void nextTurn();
     bool isValidMove(int row, int col);
     void flip(int row, int col);
