@@ -2,6 +2,8 @@
 #include "ai.h"
 #include "board.h"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 #define cornerValue 6
 
@@ -13,13 +15,20 @@ sf::Vector2<int> AI::makeMove(int player) {
   int bestX;
   int bestY;
   int best = 0;
+  srand(time(NULL));
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       if (board->get(i, j) == -1) {
-        if (rateMove(i, j, player) > best) {
+        int score = rateMove(i, j, player);
+        if (score > best) {
           bestX = i;
           bestY = j;
-          best = rateMove(i, j, player);
+          best = score;
+        }
+        else if (score == best && rand() % 2 == 1) {
+          bestX = i;
+          bestY = j;
+          best = score;
         }
       }
     }
