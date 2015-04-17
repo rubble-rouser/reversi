@@ -1,8 +1,8 @@
-#include <SFML/Graphics.hpp>
-#include "game.h"
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <SFML/Graphics.hpp>
+#include "game.h"
 
 static inline std::string int2Str(int x) {
   std::stringstream type;
