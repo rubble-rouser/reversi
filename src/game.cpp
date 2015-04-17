@@ -61,9 +61,6 @@ void Game::nextTurn() {
       nextTurn();
     }
   }
-  else {
-    currentTurn = currentTurn == 1 ? 2 : 1;
-  }
 }
 
 bool Game::isValidMove(int row, int col) {
