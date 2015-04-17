@@ -17,6 +17,11 @@ Game::Game() {
   possibleMoves();
 }
 
+Game::~Game() {
+  delete board;
+  delete ai;
+}
+
 void Game::setAI(bool on) {
   aiOn = on;
 }

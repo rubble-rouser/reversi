@@ -7,6 +7,7 @@
 class Game {
   public:
     Game();
+    ~Game();
     Board* getBoard();
     void click(int row, int col);
     int flipCount(int row, int col);
