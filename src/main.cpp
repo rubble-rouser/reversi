@@ -20,7 +20,6 @@ int main() {
   const double size = (800 - 45) / 8.0;
 
   sf::RenderWindow window(sf::VideoMode(1000, 800), "REVERSI");
-  sf::View view(window.getDefaultView());
   window.setFramerateLimit(30);
 
   sf::RectangleShape squares[8][8];
@@ -36,16 +35,35 @@ int main() {
   sf::Font font;
   font.loadFromFile("arial.ttf");
 
+  sf::Text currentTurnText("Current turn:", font);
+  currentTurnText.setCharacterSize(14);
+  currentTurnText.setPosition(850,75);
+
   sf::Text turn("BLACK", font);
   turn.setCharacterSize(30);
   turn.setPosition(850, 100);
 
-  sf::Text scores("-", font);
+  sf::Text scoreText("Score: \nBlack-White",font);
+  scoreText.setPosition(850,150);
+  scoreText.setCharacterSize(16);
+
+  sf::Text scores("——", font);
   scores.setCharacterSize(30);
   scores.setPosition(850, 200);
 
+  sf::Text gameVersusText("New game with:", font);
+  gameVersusText.setCharacterSize(16);
+  gameVersusText.setPosition(810,475);
+
+  sf::Text buttonText1("AI", font);
+  buttonText1.setPosition(820,510);
+
+  sf::Text buttonText2 ("Player", font);
+  buttonText2.setPosition(820,610);
+
   sf::RectangleShape button1(sf::Vector2f(180, 100));
   sf::RectangleShape button2(sf::Vector2f(180, 100));
+
   button1.setPosition(810, 500);
   button2.setPosition(810, 600);
   button1.setFillColor(sf::Color::Blue);
@@ -57,9 +75,6 @@ int main() {
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         window.close();
-      }
-      if (event.type == sf::Event::Resized) {
-        window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
       }
     }
 
@@ -87,11 +102,13 @@ int main() {
 
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
+
         window.pushGLStates();
         window.draw(squares[i][j]);
         window.popGLStates();
 
         float radius = (size - 10) / 2;
+
 
         if (game->getBoard()->get(i, j) > 0) {
           sf::CircleShape circle(radius);
@@ -105,13 +122,14 @@ int main() {
         }
         else if (game->getBoard()->get(i, j) == -1) {
           sf::CircleShape circle(radius);
-          circle.setFillColor(sf::Color(200, 200, 200));
+          circle.setFillColor(sf::Color(125, 125, 125));
           circle.setPosition(i * (size + 5) + 10, j * (size + 5) + 10);
           window.pushGLStates();
           window.draw(circle);
           window.popGLStates();
         }
       }
+
     }
 
     turn.setPosition(850, 100);
@@ -149,6 +167,11 @@ int main() {
     window.draw(scores);
     window.draw(button1);
     window.draw(button2);
+    window.draw(gameVersusText);
+    window.draw(currentTurnText);
+    window.draw(scoreText);
+    window.draw(buttonText1);
+    window.draw(buttonText2);
     window.popGLStates();
 
     window.display();
