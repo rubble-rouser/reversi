@@ -1,5 +1,5 @@
-#include <SFML/System.hpp>
 #include <iostream>
+#include <SFML/System.hpp>
 
 #include "game.h"
 #include "board.h"
