@@ -62,7 +62,7 @@ void Game::nextTurn() {
     }
   }
   else {
-    currentTurn = (currentTurn+1)%2+1;
+    currentTurn = currentTurn == 1 ? 2 : 1;
   }
 }
 
