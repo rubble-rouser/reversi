@@ -114,7 +114,7 @@ int main() {
   scorebg.setPosition(797, 10);
   button1.setPosition(797, 480);
   button2.setPosition(797, 600);
-  scorebg.setFillColor(sf::Color(0,0,0,125));
+  scorebg.setFillColor(sf::Color(0, 0, 0, 125));
   button1.setTexture(&button);
   button2.setTexture(&button);
 
