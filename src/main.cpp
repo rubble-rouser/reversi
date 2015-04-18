@@ -13,6 +13,9 @@ static inline std::string int2Str(int x) {
 int main() {
   Game* game = new Game;
 
+  float resizeWidth = 1;
+  float resizeHeight = 1;
+
   // Given that the padding between each square is 5, and the padding
   // between the edge squares and the window frame is also 5, the amount of
   // space taken up by padding is 9 * 5 = 45. For a 800x800 window, and an 8x8
@@ -76,22 +79,29 @@ int main() {
       if (event.type == sf::Event::Closed) {
         window.close();
       }
+      else if (event.type == sf::Event::Resized){
+        resizeWidth = event.size.width / 1000.0;
+        resizeHeight = event.size.height / 800.0;
+      }
     }
 
     window.clear();
 
     sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-    int row = localPosition.y / int(size + 5);
-    int col = localPosition.x / int(size + 5);
+    int row = (localPosition.y / resizeHeight) / int(size + 5);
+    int col = (localPosition.x / resizeWidth) / int(size + 5);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && window.hasFocus()) {
-      if (localPosition.x > 810 && localPosition.x < 990) {
-        if (localPosition.y > 500 && localPosition.y < 600) {
+      if (localPosition.x > 797 * resizeWidth
+          && localPosition.x < 977 * resizeWidth) {
+        if (localPosition.y > 480 * resizeHeight
+            && localPosition.y < 580 * resizeHeight) {
           delete game;
           game = new Game();
           game->setAI(true);
         }
-        else if (localPosition.y > 600 && localPosition.y < 700) {
+        else if (localPosition.y > 600 * resizeHeight
+                 && localPosition.y < 700 * resizeHeight) {
           delete game;
           game = new Game();
           game->setAI(false);
