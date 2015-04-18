@@ -199,10 +199,16 @@ void Game::flip(int row, int col) {
   }
 }
 
+// Re-calculate what moves are possible, update score counts, and determine if
+// game is over.
 void Game::possibleMoves() {
   int moves = 0;
+
+  // Since we are about to traverse the entire board, we might as well update
+  // each player's scores while we are at it.
   blacks = 0;
   whites = 0;
+
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       if (board->get(i, j) > 0) {
@@ -215,10 +221,14 @@ void Game::possibleMoves() {
 
         continue;
       }
+
+      // Reset previously-possible moves to `0` for re-calculation.
       else {
         board->set(i, j, 0);
       }
 
+      // If at least one piece can be flipped from this position, then this is a
+      // possible move.
       if (flipCount(i, j) > 0) {
         board->set(i, j, -1);
         skipped = false;
@@ -227,11 +237,15 @@ void Game::possibleMoves() {
     }
   }
 
+  // If no moves were found, pass the turn to the next player.
   if (moves == 0 && !skipped) {
     std::cout << "no possible moves for " << currentTurn << "\n";
     skipped = true;
     nextTurn();
   }
+
+  // If no moves were found, and we have already passed the turn to the second
+  // player, then there must be no moves remaining. The game is now over.
   else if (moves == 0 && skipped) {
     std::cout << "2no possible moves for " << currentTurn << "\n";
     gameOver = true;
