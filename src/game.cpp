@@ -86,19 +86,23 @@ void Game::click(int row, int col) {
   }
 }
 
+// Get the number of pieces the opponent will lose if the current player places
+// a piece at row, col.
 int Game::flipCount(int row, int col) {
   if (row >= 8 || col >= 8 || row < 0 || col < 0) {
     return 0;
   }
 
+  // We must iterate in all eight directions from row, col.
+  //
   // `dirX` and `dirY` are each -1, 0, or 1 to change the direction of the
   // search. This way, every possible move is considered.
   //
-  // dist is for the length of the search
-  // dist = 1 searches one slot away, dist = 2 searches 2 slots away
+  // `dist` tracks the length of our search in a particular direction.
+  // For example, `dist = 2` means that we are 2 tiles away from row, col.
   //
-  // curX and curY are temporary variables to store the temporary positions
-  // being searched while looping through the possibilities
+  // `curX` and `curY` are temporary variables to store the temporary positions
+  // being searched while looping through the possibilities.
   int dirX;
   int dirY;
   int dist = 1;
@@ -106,21 +110,25 @@ int Game::flipCount(int row, int col) {
   int curY = row;
   int flipCount = 0;
 
-  // these nested for loops consider -1, 0, and 1 for dir_x and dir_y
+  // These nested for-loops consider -1, 0, and 1 for `dirX` and `dirY`.
   for (dirX = -1; dirX < 2; dirX++) {
     for (dirY = -1; dirY < 2; dirY++) {
-      // Set initial dist to 1 and increment only if the slot tested before
-      // is the opponent's stone.
+
+      // Set initial dist to 1 and increment only if the slot tested before is
+      // the opponent's piece.
       dist = 1;
 
-      // Oh no, a `while (true)` loop!
+      // Oh no, a `while (true)` loop! Don't worry, we `break` out of it
+      // eventually.
       while (true) {
-        // dirX and dirY only set the direction (-1, 0, or 1)
+
+        // Again, `dirX` and `dirY` only set the direction (-1, 0, or 1). We
+        // go `dist` times away from row, col in this direction.
         curX = col + (dist * dirX);
         curY = row + (dist * dirY);
 
-        // Break current loop if it goes off board.
-        if (curX < 0 || curY < 0 || curX >= 8 || curY >= 8){
+        // Break current loop if it has gone off the board.
+        if (curX < 0 || curY < 0 || curX > 7 || curY > 7) {
           break;
         }
 
@@ -131,14 +139,15 @@ int Game::flipCount(int row, int col) {
         }
 
         // If the stone is the current player's stone, increment flip count by
-        // the distance minus one since the slots preceding the current slot.
+        // the distance minus one since the slots preceding the current slot
         // would be flipped
         if (board->get(curY, curX) == currentTurn) {
           flipCount += dist - 1;
           break;
         }
 
-        // Break if (dirX, dirY) = (0,0) since it'll go into an infinite loop.
+        // Break if (dirX, dirY) = (0, 0), otherwise we will enter an infinite
+        // loop.
         if (dirX == 0 && dirY == 0) {
           break;
         }
