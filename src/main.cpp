@@ -138,7 +138,7 @@ int main() {
       }
     }
 
-    if (game->getAIOn() && game->getCurrentTurn() == 1) {
+    if (game->getAIOn() && game->getCurrentTurn() == 1 && !game->isOver()) {
       delay(1);
       game->playAI();
     }
