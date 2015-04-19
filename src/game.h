@@ -8,16 +8,16 @@ class Game {
   public:
     Game();
     ~Game();
+    void setAI(bool on);
     Board* getBoard();
-    void click(int row, int col);
-    int flipCount(int row, int col);
     int getCurrentTurn();
+    bool getAIOn();
     bool isOver();
     int blackScore();
     int whiteScore();
-    void setAI(bool on);
     void playAI();
-    bool getAIOn();
+    void click(int row, int col);
+    int flipCount(int row, int col);
 
   private:
     Board* board;
