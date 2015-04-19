@@ -131,6 +131,8 @@ int main() {
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         window.close();
+        delete game;
+        return 0;
       }
       else if (event.type == sf::Event::Resized) {
         resizeWidth = event.size.width / 1000.0;
