@@ -1,4 +1,3 @@
-#include <iostream>
 #include <SFML/System.hpp>
 #include "ai.h"
 #include "board.h"
