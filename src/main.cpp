@@ -191,7 +191,11 @@ int main() {
           window.draw(circle);
           window.popGLStates();
         }
-        else if (game->getBoard()->get(i, j) == -1) {
+
+        // Display small circles on possible moves if it is not white AI's turn.
+        else if (game->getBoard()->get(i, j) == -1
+                 && !(game->getAIOn()
+                 && game->getCurrentTurn() == 1)) {
           sf::CircleShape circle2(smallRadius);
           circle2.setTexture(&glow);
           circle2.setFillColor(sf::Color(255, 255, 255));
