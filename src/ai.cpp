@@ -32,7 +32,6 @@ sf::Vector2<int> AI::makeMove(int player) {
     }
   }
 
-  std::cout << "ai playing " << bestX << ", " << bestY << "\n";
   board->set(bestX, bestY, player);
   return sf::Vector2<int>(bestX, bestY);
 }
