@@ -1,4 +1,3 @@
-#include <iostream>
 #include <SFML/System.hpp>
 #include "ai.h"
 #include "board.h"
@@ -80,7 +79,6 @@ bool Game::isValidMove(int row, int col) {
 
 void Game::click(int row, int col) {
   if (isValidMove(row, col)) {
-    std::cout << "human playing " << row << ", " << col << "\n";
     board->set(row, col, currentTurn);
     flip(row, col);
     nextTurn();
@@ -249,7 +247,6 @@ void Game::possibleMoves() {
 
   // If no moves were found, pass the turn to the next player.
   if (moves == 0 && !skipped) {
-    std::cout << "no possible moves for " << currentTurn << "\n";
     skipped = true;
     nextTurn();
   }
@@ -257,7 +254,6 @@ void Game::possibleMoves() {
   // If no moves were found, and we have already passed the turn to the second
   // player, then there must be no moves remaining. The game is now over.
   else if (moves == 0 && skipped) {
-    std::cout << "2no possible moves for " << currentTurn << "\n";
     gameOver = true;
   }
 }
