@@ -1,8 +1,15 @@
+#include <ctime>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "game.h"
+
+void delay(int seconds) {
+  clock_t temp;
+  temp = clock () + seconds * CLOCKS_PER_SEC;
+  while (clock() < temp) {}
+}
 
 static inline std::string int2Str(int x) {
   std::stringstream type;
@@ -129,6 +136,11 @@ int main() {
         resizeWidth = event.size.width / 1000.0;
         resizeHeight = event.size.height / 800.0;
       }
+    }
+
+    if (game->getAIOn() && game->getCurrentTurn() == 1) {
+      delay(1);
+      game->playAI();
     }
 
     window.clear();

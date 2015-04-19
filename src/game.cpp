@@ -1,9 +1,8 @@
 #include <iostream>
 #include <SFML/System.hpp>
-
-#include "game.h"
-#include "board.h"
 #include "ai.h"
+#include "board.h"
+#include "game.h"
 
 Game::Game() {
   board = new Board;
@@ -34,6 +33,10 @@ int Game::getCurrentTurn() {
   return currentTurn;
 }
 
+bool Game::getAIOn() {
+  return aiOn;
+}
+
 bool Game::isOver() {
   return gameOver;
 }
@@ -46,20 +49,18 @@ int Game::whiteScore() {
   return whites;
 }
 
+void Game::playAI() {
+  sf::Vector2<int> played = ai->makeMove(currentTurn);
+  flip(played.x, played.y);
+  nextTurn();
+}
+
 void Game::nextTurn() {
   currentTurn = currentTurn == 1 ? 2 : 1;
   possibleMoves();
 
   if (gameOver) {
     return;
-  }
-
-  if (aiOn) {
-    if (currentTurn == 1) {
-      sf::Vector2<int> played = ai->makeMove(currentTurn);
-      flip(played.x, played.y);
-      nextTurn();
-    }
   }
 }
 

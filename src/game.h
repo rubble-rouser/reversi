@@ -16,6 +16,8 @@ class Game {
     int blackScore();
     int whiteScore();
     void setAI(bool on);
+    void playAI();
+    bool getAIOn();
 
   private:
     Board* board;

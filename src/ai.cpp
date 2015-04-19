@@ -1,9 +1,7 @@
+#include <iostream>
 #include <SFML/System.hpp>
 #include "ai.h"
 #include "board.h"
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
 
 #define cornerValue 6
 
@@ -35,7 +33,7 @@ sf::Vector2<int> AI::makeMove(int player) {
   }
 
   std::cout << "ai playing " << bestX << ", " << bestY << "\n";
-  board->set(bestX, bestY, 1);
+  board->set(bestX, bestY, player);
   return sf::Vector2<int>(bestX, bestY);
 }
 
